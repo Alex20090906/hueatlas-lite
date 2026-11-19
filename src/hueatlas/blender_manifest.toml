@@ -1,0 +1,20 @@
+schema_version = "1.0.0"
+
+id = "hueatlas_lite"
+version = "1.0.0"
+name = "HueAtlas Lite"
+tagline = "Free palette atlas texturing for low-poly game kits"
+maintainer = "Swatchworks"
+type = "add-on"
+
+website = "https://github.com/Alex20090906/hueatlas-lite"
+
+tags = ["UV", "Material", "Game Engine"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = ["2026 Swatchworks"]
+
+[permissions]
+files = "Read palette files, write atlas images and engine materials"

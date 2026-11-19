@@ -1,0 +1,14 @@
+{
+  "flat5_mip3": {
+    "albedo": "20b891abe7c7e4ef50963221c7b056ef4b014b41533f5901f20fa7c81295e85e",
+    "orm": "781ace66a5faf3c0a21c3fdc36c897a99a6020a7c89bb52e01ad79aed3bcf0b6"
+  },
+  "flat8_fixed": {
+    "albedo": "f73f0289a77ffb6277f4c8b6de932bb56b8a047c962e0bb7387c84ff613a8e49",
+    "orm": "fc406641119500a08a7a13de491d73a06ba7798cf334be8539ef7932104d692f"
+  },
+  "gradient_oklab": {
+    "albedo": "6a41915b538c17758843e509d75a4c7af9e4d30bf7c8004bead197ddbd3f8c65",
+    "orm": "f2f5ef32bed9d5a61d8e1d805089d2314193e352f32d22156df9ea95f53060ea"
+  }
+}
