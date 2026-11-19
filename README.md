@@ -35,7 +35,10 @@ Get the full version: https://superhivemarket.com/products/hueatlas
 
 ## Install
 
-Blender 4.2 or newer (tested on 4.2 LTS, 4.5 LTS, 5.2 LTS and 5.3). Download the zip, then in Blender: Edit > Preferences >
+Blender 4.2 or newer (tested on 4.2 LTS, 4.5 LTS, 5.2 LTS and 5.3). Download
+`hueatlas_lite-1.0.0.zip` from
+[Releases](https://github.com/Alex20090906/hueatlas-lite/releases/latest) (do not
+unzip it), then in Blender: Edit > Preferences >
 Get Extensions > ▾ > Install from Disk. Open the sidebar (N) and pick the
 **HueAtlas** tab. See [the user guide](docs/USER_GUIDE.md).
 
@@ -51,8 +54,8 @@ blender --background --factory-startup --python-exit-code 1 --python tests/run_a
 
 ## How it was made
 
-HueAtlas was written with AI assistance (Claude Code) and reviewed, tested and
-integrated by its human maintainer. Every feature has an automated test.
+HueAtlas was written with AI assistance (Claude Code). Every feature has an
+automated test.
 
 ## License
 
