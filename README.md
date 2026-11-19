@@ -31,7 +31,7 @@ UVs.
   texture sets with import notes, no custom shaders
 - extra audit checks (mip bleed, region, colour space, power of two)
 
-Get the full version: https://superhivemarket.com/products/hueatlas
+The full version is coming soon to Superhive.
 
 ## Install
 
