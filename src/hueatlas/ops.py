@@ -39,11 +39,15 @@ class HUEATLAS_OT_atlas_add(bpy.types.Operator):
     name: StringProperty(name="Name", default="Palette")
     defaults: BoolProperty(name="Starter swatches", default=True)
 
+    @classmethod
+    def poll(cls, context):
+        # The lite edition works with one atlas per file.
+        if edition.PAID or len(context.scene.hueatlas.atlases) == 0:
+            return True
+        cls.poll_message_set("This file already has a palette atlas")
+        return False
+
     def execute(self, context):
-        s = context.scene.hueatlas
-        if not edition.PAID and len(s.atlases) >= 1:
-            edition.require_paid(self, "More than one atlas per file")
-            return {"CANCELLED"}
         atlas = core.create_atlas(context.scene, self.name, defaults=self.defaults)
         if _sync_or_report(self, context.scene, atlas) is None:
             return {"CANCELLED"}
@@ -108,13 +112,17 @@ class HUEATLAS_OT_material_build(bpy.types.Operator):
         return {"FINISHED"}
 
 
+# The lite edition has flat swatches only, so it does not offer the gradient kind at all.
+_SWATCH_KINDS = [("FLAT", "Flat", "")] + ([("GRADIENT", "Gradient", "")] if edition.PAID else [])
+
+
 class HUEATLAS_OT_swatch_add(bpy.types.Operator):
     bl_idname = "hueatlas.swatch_add"
     bl_label = "Add Swatch"
     bl_description = "Add a swatch after the active one"
     bl_options = {"REGISTER", "UNDO"}
 
-    kind: EnumProperty(items=[("FLAT", "Flat", ""), ("GRADIENT", "Gradient", "")], default="FLAT")
+    kind: EnumProperty(items=_SWATCH_KINDS, default="FLAT")
     append: BoolProperty(name="Append at end", default=False)
 
     def execute(self, context):
@@ -122,11 +130,9 @@ class HUEATLAS_OT_swatch_add(bpy.types.Operator):
         atlas = _atlas_or_report(self, context)
         if atlas is None:
             return {"CANCELLED"}
-        if self.kind == "GRADIENT" and not edition.require_paid(self, "Gradient swatches"):
-            return {"CANCELLED"}
         if core.lite_append_blocked(scene, atlas, 1):
-            self.report({"WARNING"}, "The atlas is full and growing it would move used cells: "
-                                     f"{edition.LITE_MESSAGE}")
+            self.report({"WARNING"}, "The atlas is full, and growing it would move cells that faces use. "
+                                     "Set Columns and Cell px for the palette size you need before you assign faces")
             return {"CANCELLED"}
         index = None
         if edition.PAID and not self.append and len(atlas.swatches):
@@ -173,8 +179,11 @@ class HUEATLAS_OT_swatch_remove(bpy.types.Operator):
 
         if not edition.PAID:
             moved = L.moved_uids(core.load_snapshot(atlas), new_layout)
-            if uid in used or (used & moved):
-                edition.require_paid(self, "Removing a swatch that faces use, or one that moves used cells")
+            if uid in used:
+                self.report({"WARNING"}, "Faces use this swatch. Assign them to another swatch, then remove it")
+                return {"CANCELLED"}
+            if used & moved:
+                self.report({"WARNING"}, "Removing this swatch would move cells that faces use, so it was kept")
                 return {"CANCELLED"}
 
         fallback = self.fallback_uid
@@ -207,8 +216,6 @@ class HUEATLAS_OT_swatch_move(bpy.types.Operator):
     to_index: IntProperty(default=-1, options={"SKIP_SAVE"})
 
     def execute(self, context):
-        if not edition.require_paid(self, "Reordering swatches"):
-            return {"CANCELLED"}
         atlas = _atlas_or_report(self, context)
         if atlas is None:
             return {"CANCELLED"}
@@ -368,14 +375,13 @@ class HUEATLAS_OT_palette_import(bpy.types.Operator, ImportHelper):
     bl_options = {"REGISTER", "UNDO"}
 
     filter_glob: StringProperty(default="*.gpl;*.json;*.hex;*.txt", options={"HIDDEN"})
-    new_atlas: BoolProperty(name="Into a new atlas", default=False)
+    if edition.PAID:  # the lite edition has one atlas per file, so it has no such option
+        new_atlas: BoolProperty(name="Into a new atlas", default=False)
 
     def execute(self, context):
-        s = context.scene.hueatlas
-        if self.new_atlas and len(s.atlases) and not edition.require_paid(self, "More than one atlas"):
-            return {"CANCELLED"}
+        new_atlas = edition.PAID and self.new_atlas
         try:
-            atlas, count = core.import_palette(context.scene, self.filepath, self.new_atlas)
+            atlas, count = core.import_palette(context.scene, self.filepath, new_atlas)
         except (OSError, ValueError, core.LiteBlocked) as exc:
             self.report({"ERROR"}, f"Could not import the palette: {exc}")
             return {"CANCELLED"}
@@ -498,7 +504,6 @@ classes = (
     HUEATLAS_OT_material_build,
     HUEATLAS_OT_swatch_add,
     HUEATLAS_OT_swatch_remove,
-    HUEATLAS_OT_swatch_move,
     HUEATLAS_OT_assign_faces,
     HUEATLAS_OT_assign_objects,
     HUEATLAS_OT_select_by_swatch,
@@ -508,6 +513,10 @@ classes = (
     HUEATLAS_OT_audit,
     HUEATLAS_OT_audit_select,
 )
+
+
+if edition.PAID:  # reordering needs the remap in the paid package
+    classes = classes + (HUEATLAS_OT_swatch_move,)
 
 
 def register():

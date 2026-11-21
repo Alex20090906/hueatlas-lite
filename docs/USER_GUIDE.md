@@ -3,7 +3,7 @@
 HueAtlas textures whole low-poly kits with one material and one small palette
 image. Every face remembers which swatch it uses, so you can reorder, insert,
 delete or resize swatches without any face changing colour, and the result
-exports cleanly to Godot, Unity, Unreal and glTF.
+exports cleanly to Godot, Unity and glTF, with an Unreal 5 texture set.
 
 Open the sidebar with **N** in the 3D Viewport or the UV/Image Editor and pick
 the **HueAtlas** tab.
@@ -17,6 +17,9 @@ the **HueAtlas** tab.
    such as `Palette_Albedo.png`.
 3. Set **Cell px** (pixels per swatch) and **Columns**. The info line shows
    the image size, how many cells are used, and the highest clean mip level.
+   In HueAtlas Lite, pick these before you assign faces: Lite never moves a
+   cell that faces use, so once faces are assigned it keeps the layout, and it
+   does not remove a swatch that faces use.
 
 ## 2. Edit swatches
 

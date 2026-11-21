@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "hueatlas_lite"
-version = "1.0.0"
+version = "1.0.1"
 name = "HueAtlas Lite"
 tagline = "Free palette atlas texturing for low-poly game kits"
 maintainer = "Swatchworks"

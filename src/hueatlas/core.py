@@ -48,7 +48,7 @@ LOSSY_FORMATS = {"JPEG", "JPEG2000", "WEBP"}
 
 
 class LiteBlocked(Exception):
-    """The lite edition refused a change that would move assigned cells."""
+    """The lite edition (no remap) kept a layout because the change would move assigned cells."""
 
 
 SYNC_ERRORS = (L.LayoutError, LiteBlocked, OSError, RuntimeError)
@@ -612,7 +612,7 @@ def sync(scene, atlas, rename: dict | None = None, scan: bool = False) -> L.Layo
             _revert_params(atlas, old)
             raise LiteBlocked(
                 "Faces already use these swatches, so the layout was kept. "
-                "Moving assigned cells is not available in HueAtlas Lite."
+                "Set Columns and Cell px before you assign faces."
             )
         looks = looks_of(atlas)
         write_images(scene, atlas, layout, looks)  # disk errors stop here, before any UV change

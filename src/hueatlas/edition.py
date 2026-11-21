@@ -19,20 +19,10 @@ if os.environ.get("HUEATLAS_FORCE_LITE") == "1":
 EDITION = "full" if PAID else "lite"
 PRODUCT = "HueAtlas" if PAID else "HueAtlas Lite"
 
-LITE_MESSAGE = "Not available in HueAtlas Lite"
-
 
 def paid_module():
     """Import the paid package on demand (only valid when PAID is True)."""
     return importlib.import_module(_BASE + ".paid")
-
-
-def require_paid(op=None, what: str = "") -> bool:
-    if PAID:
-        return True
-    if op is not None:
-        op.report({"WARNING"}, f"{what}: {LITE_MESSAGE}" if what else LITE_MESSAGE)
-    return False
 
 
 def claim_registration():

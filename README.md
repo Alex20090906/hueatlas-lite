@@ -1,7 +1,7 @@
 # HueAtlas
 
 Palette atlas texturing for low-poly game kits, built to export cleanly to
-Godot, Unity, Unreal and glTF.
+Godot, Unity and glTF, with an Unreal 5 texture set.
 
 Texture a whole kit with one material and one small palette image. Each face
 stores which swatch it uses, so the palette can change without breaking your
@@ -36,7 +36,7 @@ The full version is coming soon to Superhive.
 ## Install
 
 Blender 4.2 or newer (tested on 4.2 LTS, 4.5 LTS, 5.2 LTS and 5.3). Download
-`hueatlas_lite-1.0.0.zip` from
+`hueatlas_lite-1.0.1.zip` from
 [Releases](https://github.com/Alex20090906/hueatlas-lite/releases/latest) (do not
 unzip it), then in Blender: Edit > Preferences >
 Get Extensions > ▾ > Install from Disk. Open the sidebar (N) and pick the
